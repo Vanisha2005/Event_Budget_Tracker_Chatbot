@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventIQ — Premium Event Planner</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #09090b;
+      --ink2: #0f0f12;
+      --ink3: #141418;
+      --ink4: #1a1a20;
+      --ink5: #1f1f27;
+      --panel: #161619;
+      --card: #1c1c22;
+      --card2: #222229;
+      --gold: #c9a84c;
+      --gold2: #e8c97a;
+      --gold3: #f5e0a0;
+      --goldDim: rgba(201, 168, 76, 0.10);
+      --goldGlow: rgba(201, 168, 76, 0.18);
+      --goldLine: rgba(201, 168, 76, 0.22);
+      --cream: #f0e6c8;
+      --amber: #e8a23a;
+      --amberDim: rgba(232, 162, 58, 0.12);
+      --red: #e05c5c;
+      --redDim: rgba(224, 92, 92, 0.12);
+      --teal: #4db8a8;
+      --tealDim: rgba(77, 184, 168, 0.10);
+      --mist: #a8a8b8;
+      --mist2: #6a6a7a;
+      --mist3: #3a3a48;
+      --border: rgba(255, 255, 255, 0.05);
+      --borderG: rgba(201, 168, 76, 0.15);
+      --serif: 'Cormorant Garamond', serif;
+      --sans: 'Outfit', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--ink);
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      position: relative
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -180px;
+      left: -180px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(77, 184, 168, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0
+    }
+
+    ::-webkit-scrollbar {
+      width: 3px;
+      height: 3px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--mist3);
+      border-radius: 2px
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 60px;
+      flex-shrink: 0;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 20
+    }
+
+    .nav-accent {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold2) 60%, transparent 100%);
+      opacity: 0.5
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .brand-gem {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1a1500 0%, var(--ink4) 100%);
+      border: 1px solid var(--goldLine);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(201, 168, 76, 0.2), inset 0 1px 0 rgba(201, 168, 76, 0.15);
+      font-size: 16px;
+      color: var(--gold2)
+    }
+
+    .brand-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      color: var(--cream)
+    }
+
+    .brand-name span {
+      color: var(--gold2);
+      font-style: italic
+    }
+
+    .brand-tag {
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--mist3);
+      font-weight: 500;
+      margin-top: -2px
+    }
+
+    .nav-stats {
+      display: flex;
+      gap: 0;
+      flex: 1;
+      justify-content: center;
+      background: var(--ink4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0 24px
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      height: 36px;
+      border-right: 1px solid var(--border)
+    }
+
+    .stat:last-child {
+      border-right: none
+    }
+
+    .stat-label {
+      color: var(--mist2);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px
+    }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--cream);
+      font-weight: 500;
+      margin-left: 6px
+    }
+
+    .stat-val.g {
+      color: var(--teal)
+    }
+
+    .stat-val.a {
+      color: var(--amber)
+    }
+
+    .stat-val.r {
+      color: var(--red)
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0
+    }
+
+    .nav-btn {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 6px;
+      border: 1px solid var(--borderG);
+      background: var(--goldDim);
+      color: var(--gold2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--sans);
+      font-size: 11.5px;
+      font-weight: 500;
+      transition: all 0.2s;
+      white-space: nowrap;
+      letter-spacing: 0.3px
+    }
+
+    .nav-btn:hover {
+      background: var(--goldGlow);
+      box-shadow: 0 0 16px rgba(201, 168, 76, 0.15)
+    }
+
+    .nav-btn.ghost {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--mist2)
+    }
+
+    .nav-btn.ghost:hover {
+      background: var(--ink4);
+      color: var(--cream);
+      border-color: var(--mist3)
+    }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      z-index: 1
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 228px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 18px 10px;
+      gap: 2px
+    }
+
+    .sb-logo-area {
+      padding: 0 8px 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px
+    }
+
+    .sb-greeting {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--mist);
+      font-style: italic;
+      line-height: 1.6
+    }
+
+    .sb-greeting strong {
+      color: var(--gold2);
+      font-style: normal;
+      font-weight: 600
+    }
+
+    .sb-section {
+      font-size: 8.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--mist3);
+      padding: 10px 10px 4px;
+      font-family: var(--sans)
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--mist2);
+      transition: all 0.18s;
+      border: 1px solid transparent;
+      position: relative
+    }
+
+    .sb-item:hover {
+      background: var(--ink4);
+      color: var(--cream)
+    }
+
+    .sb-item.active {
+      background: var(--goldDim);
+      color: var(--gold2);
+      border-color: var(--goldLine)
+    }
+
+    .sb-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 60%;
+      background: var(--gold);
+      border-radius: 0 2px 2px 0
+    }
+
+    .sb-icon {
+      font-size: 14px;
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+      opacity: 0.85
+    }
+
+    .brc {
+      margin: 16px 0 4px;
+      background: var(--ink4);
+      border: 1px solid var(--borderG);
+      border-radius: 10px;
+      padding: 14px
+    }
+
+    .brc-title {
+      font-size: 8.5px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--mist2);
+      font-weight: 600;
+      margin-bottom: 12px
+    }
+
+    .brc-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px
+    }
+
+    .brc-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .brc-label {
+      font-size: 11px;
+      color: var(--mist);
+      flex: 1
+    }
+
+    .brc-track {
+      flex: 1;
+      height: 3px;
+      background: var(--ink3);
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .brc-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .brc-pct {
+      font-size: 9.5px;
+      font-family: var(--mono);
+      color: var(--mist2);
+      width: 24px;
+      text-align: right
+    }
+
+    /* CHAT */
+    .chat-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--ink2);
+      position: relative
+    }
+
+    .chat-col::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0
+    }
+
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      scroll-behavior: smooth;
+      position: relative;
+      z-index: 1
+    }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      animation: fadeUp .3s ease
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .msg.user {
+      flex-direction: row-reverse
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      align-self: flex-end
+    }
+
+    .msg.bot .avatar {
+      background: linear-gradient(135deg, #1a1500, var(--ink5));
+      border: 1px solid var(--goldLine);
+      color: var(--gold2);
+      box-shadow: 0 0 16px rgba(201, 168, 76, 0.15);
+      font-family: var(--serif);
+      font-size: 16px
+    }
+
+    .msg.user .avatar {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--mist2);
+      font-size: 10px;
+      font-weight: 600;
+      font-family: var(--sans)
+    }
+
+    .bubble {
+      max-width: 68%;
+      padding: 13px 17px;
+      font-size: 13.5px;
+      line-height: 1.7
+    }
+
+    .msg.bot .bubble {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 14px 3px;
+      color: var(--cream);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3)
+    }
+
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #2a2000, #1e1800);
+      border: 1px solid var(--goldLine);
+      border-radius: 14px 14px 3px 14px;
+      color: var(--gold3);
+      font-weight: 400;
+      box-shadow: 0 4px 24px rgba(201, 168, 76, 0.08)
+    }
+
+    .i-card {
+      margin-top: 12px;
+      background: var(--ink4);
+      border: 1px solid var(--borderG);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 12px
+    }
+
+    .i-card-head {
+      font-family: var(--serif);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold2);
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .i-card-head::before {
+      content: '◆';
+      font-size: 8px;
+      color: var(--gold)
+    }
+
+    .bd-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px
+    }
+
+    .bd-lbl {
+      width: 88px;
+      color: var(--mist);
+      font-size: 11px;
+      flex-shrink: 0
+    }
+
+    .bd-track {
+      flex: 1;
+      height: 4px;
+      background: var(--ink3);
+      border-radius: 3px;
+      overflow: hidden
+    }
+
+    .bd-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--gold);
+      transition: width .7s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .bd-fill.a {
+      background: var(--amber)
+    }
+
+    .bd-fill.r {
+      background: var(--red)
+    }
+
+    .bd-amt {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--cream);
+      width: 72px;
+      text-align: right
+    }
+
+    .ins-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--mist);
+      line-height: 1.55
+    }
+
+    .ins-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0
+    }
+
+    .ins-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0
+    }
+
+    .dg {
+      background: var(--teal)
+    }
+
+    .da {
+      background: var(--amber)
+    }
+
+    .dr {
+      background: var(--red)
+    }
+
+    .db {
+      background: var(--gold)
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px
+    }
+
+    .chip {
+      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--borderG);
+      color: var(--gold);
+      cursor: pointer;
+      background: var(--goldDim);
+      transition: all .18s;
+      font-family: var(--sans)
+    }
+
+    .chip:hover {
+      background: var(--goldGlow);
+      color: var(--gold3);
+      box-shadow: 0 0 12px rgba(201, 168, 76, 0.15)
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-top: 6px;
+      margin-right: 4px;
+      font-family: var(--mono)
+    }
+
+    .badge.w {
+      background: var(--amberDim);
+      color: var(--amber)
+    }
+
+    .badge.d {
+      background: var(--redDim);
+      color: var(--red)
+    }
+
+    .badge.o {
+      background: var(--tealDim);
+      color: var(--teal)
+    }
+
+    .badge.i {
+      background: var(--goldDim);
+      color: var(--gold2)
+    }
+
+    .report-card {
+      background: var(--ink3);
+      border: 1px solid var(--goldLine);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 12px;
+      font-size: 12px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4)
+    }
+
+    .report-title {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--gold2);
+      margin-bottom: 16px;
+      letter-spacing: 0.3px
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px
+    }
+
+    .rg-cell {
+      background: var(--ink4);
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border)
+    }
+
+    .rg-label {
+      font-size: 9px;
+      color: var(--mist2);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 3px
+    }
+
+    .rg-val {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--cream);
+      font-weight: 500
+    }
+
+    .typing-bbl {
+      padding: 15px 18px !important
+    }
+
+    .dots {
+      display: flex;
+      gap: 5px;
+      align-items: center
+    }
+
+    .dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: goldBounce 1.4s ease infinite;
+      opacity: .4
+    }
+
+    .dots span:nth-child(2) {
+      animation-delay: .2s
+    }
+
+    .dots span:nth-child(3) {
+      animation-delay: .4s
+    }
+
+    @keyframes goldBounce {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.6);
+        opacity: .3
+      }
+
+      40% {
+        transform: scale(1.1);
+        opacity: 1
+      }
+    }
+
+    /* QUICK BAR */
+    .quick-bar {
+      padding: 8px 24px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1
+    }
+
+    .quick-bar::-webkit-scrollbar {
+      display: none
+    }
+
+    .qc {
+      font-size: 11.5px;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--ink4);
+      color: var(--mist);
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--sans);
+      transition: all .18s;
+      flex-shrink: 0
+    }
+
+    .qc:hover {
+      background: var(--goldDim);
+      color: var(--gold2);
+      border-color: var(--goldLine)
+    }
+
+    /* INPUT */
+    .input-zone {
+      padding: 12px 24px 18px;
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1
+    }
+
+    .input-box {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      background: var(--ink4);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      transition: border-color .25s, box-shadow .25s
+    }
+
+    .input-box:focus-within {
+      border-color: var(--goldLine);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.07), 0 4px 20px rgba(0, 0, 0, 0.2)
+    }
+
+    #userinput {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: var(--sans);
+      font-size: 13.5px;
+      color: var(--cream);
+      resize: none;
+      max-height: 100px;
+      line-height: 1.6
+    }
+
+    #userinput::placeholder {
+      color: var(--mist3)
+    }
+
+    .voice-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--ink3);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mist2);
+      transition: all .2s
+    }
+
+    .voice-btn:hover {
+      border-color: var(--mist3);
+      color: var(--cream)
+    }
+
+    .voice-btn.on {
+      background: var(--redDim);
+      border-color: rgba(224, 92, 92, .4);
+      color: var(--red);
+      animation: voicePulse 1.2s ease infinite
+    }
+
+    @keyframes voicePulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(224, 92, 92, .3)
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(224, 92, 92, 0)
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(224, 92, 92, 0)
+      }
+    }
+
+    .send-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--gold), #a87820);
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .15s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3)
+    }
+
+    .send-btn:hover {
+      opacity: .9;
+      box-shadow: 0 4px 24px rgba(201, 168, 76, .45)
+    }
+
+    .send-btn:active {
+      transform: scale(.95)
+    }
+
+    .send-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: #1a1000;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    #voice-label {
+      font-size: 10.5px;
+      color: var(--red);
+      font-family: var(--mono);
+      align-items: center;
+      gap: 5px;
+      display: none;
+      margin-right: 4px
+    }
+
+    #voice-label.show {
+      display: flex
+    }
+
+    .vrec {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: blink .7s ease infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .2
+      }
+    }
+
+    /* RIGHT PANEL */
+    .rpanel {
+      width: 252px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--border);
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 18px 14px;
+      gap: 14px
+    }
+
+    .rp-head {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gold2);
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .rp-head::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--goldLine), transparent)
+    }
+
+    .rp-card {
+      background: var(--ink4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px
+    }
+
+    .exp-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .exp-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0
+    }
+
+    .exp-bullet {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .exp-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .exp-cat {
+      font-size: 9.5px;
+      color: var(--mist2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px
+    }
+
+    .exp-desc {
+      font-size: 12px;
+      color: var(--cream);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .exp-cost {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--red);
+      flex-shrink: 0
+    }
+
+    .tip-row {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 11.5px;
+      color: var(--mist);
+      line-height: 1.5;
+      display: flex;
+      gap: 7px
+    }
+
+    .tip-row:last-child {
+      border-bottom: none
+    }
+
+    .tip-gem {
+      color: var(--gold);
+      font-size: 9px;
+      flex-shrink: 0;
+      margin-top: 4px
+    }
+
+    .tl-row {
+      display: flex;
+      gap: 10px;
+      padding-bottom: 12px;
+      position: relative
+    }
+
+    .tl-row:last-child {
+      padding-bottom: 0
+    }
+
+    .tl-pip {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 3px;
+      border: 2px solid var(--mist3);
+      background: var(--ink3)
+    }
+
+    .tl-pip.done {
+      background: var(--teal);
+      border-color: var(--teal)
+    }
+
+    .tl-pip.now {
+      background: var(--amber);
+      border-color: var(--amber);
+      box-shadow: 0 0 6px rgba(232, 162, 58, .5)
+    }
+
+    .tl-connector {
+      position: absolute;
+      left: 4px;
+      top: 13px;
+      width: 1px;
+      height: calc(100% - 5px);
+      background: var(--border)
+    }
+
+    .tl-row:last-child .tl-connector {
+      display: none
+    }
+
+    .tl-when {
+      font-size: 10px;
+      color: var(--gold);
+      font-family: var(--mono)
+    }
+
+    .tl-task {
+      font-size: 11.5px;
+      color: var(--mist);
+      margin-top: 2px;
+      line-height: 1.4
+    }
+
+    .empty-state {
+      color: var(--mist3);
+      font-size: 12px;
+      text-align: center;
+      padding: 18px 0;
+      font-style: italic;
+      font-family: var(--serif)
+    }
+
+    /* WELCOME */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 28px;
+      gap: 0
+    }
+
+    .w-crown {
+      font-size: 48px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 28px rgba(201, 168, 76, .5))
+    }
+
+    .w-title {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      margin-bottom: 6px
+    }
+
+    .w-title em {
+      color: var(--gold2);
+      font-style: italic
+    }
+
+    .w-sub {
+      font-size: 13.5px;
+      color: var(--mist2);
+      line-height: 1.65;
+      max-width: 380px;
+      margin: 0 auto 26px
+    }
+
+    .w-divider {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 22px
+    }
+
+    .w-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center
+    }
+
+    .w-chip {
+      font-size: 12.5px;
+      padding: 9px 18px;
+      border-radius: 30px;
+      border: 1px solid var(--borderG);
+      color: var(--gold);
+      cursor: pointer;
+      background: var(--goldDim);
+      transition: all .2s;
+      font-family: var(--sans);
+      font-weight: 400
+    }
+
+    .w-chip:hover {
+      background: var(--goldGlow);
+      color: var(--gold3);
+      box-shadow: 0 0 20px rgba(201, 168, 76, .2);
+      transform: translateY(-1px)
+    }
+
+    /* AUTHENTICATION PAGE */
+    #auth-content {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--borderG);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(201, 168, 76, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--amber), var(--gold2));
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .auth-header .brand-gem {
+      margin: 0 auto 16px;
+      width: 48px;
+      height: 48px;
+      font-size: 20px;
+    }
+    .auth-title {
+      font-family: var(--serif);
+      font-size: 28px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .auth-subtitle {
+      font-size: 13px;
+      color: var(--mist2);
+      line-height: 1.5;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .auth-input {
+      width: 100%;
+      background: var(--ink4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .auth-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+    }
+    .auth-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), #a87820);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201, 168, 76, 0.3);
+    }
+    .auth-toggle {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--mist);
+    }
+    .auth-toggle span {
+      color: var(--gold2);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .auth-toggle span:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="auth-content">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-gem">◆</div>
+        <div class="auth-title">Welcome to Event<span>IQ</span></div>
+        <div class="auth-subtitle">Sign in to your premium concierge account</div>
+      </div>
+      <div class="auth-form" id="login-form">
+        <input type="email" class="auth-input" id="auth-email" placeholder="Email address" />
+        <input type="password" class="auth-input" id="auth-pass" placeholder="Password" />
+        <button class="auth-btn" onclick="handleAuth()">Sign In</button>
+        <div class="auth-toggle">Don't have an account? <span onclick="toggleAuthMode()">Sign up here</span></div>
+      </div>
+      <div class="auth-form" id="signup-form" style="display:none;">
+        <input type="text" class="auth-input" id="auth-name" placeholder="Full name" />
+        <input type="email" class="auth-input" id="auth-signup-email" placeholder="Email address" />
+        <input type="password" class="auth-input" id="auth-signup-pass" placeholder="Create password" />
+        <button class="auth-btn" onclick="handleAuth()">Create Account</button>
+        <div class="auth-toggle">Already have an account? <span onclick="toggleAuthMode()">Sign in</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app-content" style="display:none;">
+
+  <nav class="nav">
+    <div class="brand">
+      <div class="brand-gem">◆</div>
+      <div>
+        <div class="brand-name">Event<span>IQ</span></div>
+        <div class="brand-tag">Premium Concierge</div>
+      </div>
+    </div>
+    <div class="nav-stats">
+      <div class="stat"><span class="stat-label">Event</span><span class="stat-val" id="s-event">—</span></div>
+      <div class="stat"><span class="stat-label">Budget</span><span class="stat-val" id="s-budget">₹0</span></div>
+      <div class="stat"><span class="stat-label">Spent</span><span class="stat-val r" id="s-spent">₹0</span></div>
+      <div class="stat"><span class="stat-label">Remaining</span><span class="stat-val g" id="s-left">₹0</span></div>
+      <div class="stat"><span class="stat-label">Guests</span><span class="stat-val" id="s-guests">—</span></div>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn ghost" onclick="printReport()"><span class="sb-icon" style="filter:grayscale(1)">🖨️</span>
+        Print</button>
+      <button class="nav-btn" onclick="qSend('Generate a full detailed event summary report')">◆ Report</button>
+      <button class="nav-btn ghost" onclick="resetState()">↺ Reset</button>
+      <button class="nav-btn ghost" onclick="handleLogout()">🚪 Logout</button>
+    </div>
+    <div class="nav-accent"></div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo-area">
+        <div class="sb-greeting">Your personal<br><strong>Event Concierge</strong></div>
+      </div>
+      <div class="sb-section">Planning</div>
+      <div class="sb-item active" onclick="qSend('Show me the current event plan overview')"><span
+          class="sb-icon">📋</span>Overview</div>
+      <div class="sb-item" onclick="qSend('Show detailed budget breakdown by category')"><span
+          class="sb-icon">💰</span>Budget</div>
+      <div class="sb-item" onclick="qSend('Show all recorded expenses with analysis')"><span
+          class="sb-icon">🧾</span>Expenses</div>
+      <div class="sb-item" onclick="qSend('Generate a complete event booking timeline')"><span
+          class="sb-icon">🗓</span>Timeline</div>
+      <div class="sb-section">Insights</div>
+      <div class="sb-item" onclick="qSend('Give me the top 5 money saving tips with exact rupee savings')"><span
+          class="sb-icon">💡</span>Save Money</div>
+      <div class="sb-item" onclick="qSend('Show vendor management, compare and track all vendor payments')"><span
+          class="sb-icon">🤝</span>Vendors</div>
+      <div class="sb-item" onclick="qSend('Show all budget alerts, risks and warnings')"><span
+          class="sb-icon">⚠️</span>Alerts</div>
+      <div class="sb-item" onclick="qSend('Analyse overspending and provide detailed recommendations')"><span
+          class="sb-icon">📊</span>Analysis</div>
+      <div class="sb-section">Scenarios</div>
+      <div class="sb-item" onclick="qSend('What if I reduce the guest count by 25% — show new budget')"><span
+          class="sb-icon">👥</span>Fewer Guests</div>
+      <div class="sb-item" onclick="qSend('What if I increase my total budget by 20%')"><span
+          class="sb-icon">📈</span>More Budget</div>
+      <div class="sb-item" onclick="qSend('What if I switch to a simpler, cheaper venue')"><span
+          class="sb-icon">🏛</span>Change Venue</div>
+      <div class="brc" id="brc" style="display:none">
+        <div class="brc-title">Category Usage</div>
+        <div id="brc-rows"></div>
+      </div>
+    </aside>
+
+    <div class="chat-col">
+      <div id="messages">
+        <div class="welcome">
+          <div class="w-crown">♚</div>
+          <div class="w-title">Your <em>Event Planning</em><br>Concierge</div>
+          <div class="w-divider"></div>
+          <div class="w-sub">Premium AI-powered planning for Indian weddings, celebrations & corporate events. Tell me
+            about your event — budgets, vendors & every detail handled.</div>
+          <div class="w-chips">
+            <div class="w-chip" onclick="qSend('Plan a grand wedding for 300 guests with a budget of Rs 8 lakh')">💍
+              Grand Wedding</div>
+            <div class="w-chip" onclick="qSend('Plan a birthday party for 60 guests, budget Rs 80,000')">🎂 Birthday
+              Party</div>
+            <div class="w-chip" onclick="qSend('Plan a corporate gala for 150 people, budget Rs 3 lakh')">💼 Corporate
+              Gala</div>
+            <div class="w-chip" onclick="qSend('Plan a sangeet night for 120 guests, budget Rs 1.5 lakh')">💃 Sangeet
+              Night</div>
+            <div class="w-chip" onclick="qSend('Plan a haldi ceremony for 80 guests, budget Rs 70,000')">🌿 Haldi
+              Ceremony</div>
+            <div class="w-chip" onclick="qSend('Plan a grand reception for 400 guests, budget Rs 12 lakh')">🥂 Grand
+              Reception</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-bar">
+        <div class="qc" onclick="openExpenseModal()">➕ Manual Expense</div>
+        <div class="qc" onclick="qSend('I want to record a new expense')">＋ Add Expense</div>
+        <div class="qc" onclick="qSend('How much budget is remaining and what is my current standing?')">Balance Check
+        </div>
+        <div class="qc" onclick="qSend('Give me 5 detailed money saving tips with rupee amounts')">💡 Save Money</div>
+        <div class="qc" onclick="qSend('What if I reduce guests by 30 people?')">What if…?</div>
+        <div class="qc" onclick="qSend('Generate a full event summary report')">📋 Full Report</div>
+        <div class="qc" onclick="qSend('Create a month-by-month booking timeline for my event')">🗓 Timeline</div>
+        <div class="qc"
+          onclick="qSend('Compare two decoration vendors: Vendor A quoted Rs 40,000 and Vendor B quoted Rs 55,000')">🤝
+          Compare Vendors</div>
+        <div class="qc" onclick="qSend('What are the best catering options for my event type and budget?')">🍽 Catering
+          Tips</div>
+      </div>
+
+      <div class="input-zone">
+        <div class="input-box">
+          <textarea id="userinput" rows="1"
+            placeholder="Describe your event, record expenses, or ask anything…"></textarea>
+          <span id="voice-label"><span class="vrec"></span>Listening…</span>
+          <button class="voice-btn" id="voiceBtn" title="Voice input" onclick="toggleVoice()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </svg>
+          </button>
+          <button class="send-btn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="rpanel">
+      <div>
+        <div class="rp-head">Expenses</div>
+        <div class="rp-card" id="exp-list">
+          <div class="empty-state">No expenses logged yet</div>
+        </div>
+      </div>
+      <div>
+        <div class="rp-head">Saving Tips</div>
+        <div class="rp-card" id="tips-list">
+          <div class="empty-state">Plan an event to unlock tips</div>
+        </div>
+      </div>
+      <div>
+        <div class="rp-head">Timeline</div>
+        <div class="rp-card" id="tl-list">
+          <div class="empty-state">Add your event date to see timeline</div>
+        </div>
+      </div>
+      <div>
+        <div class="rp-head">Analytics</div>
+        <div class="rp-card"><canvas id="budgetChart" height="180"></canvas></div>
+        <div class="rp-card" style="margin-top:10px;"><canvas id="spendingChart" height="180"></canvas></div>
+      </div>
+    </aside>
+  </div>
+  </div>
+
+  <script>
+    function toggleAuthMode() {
+      const login = document.getElementById('login-form');
+      const signup = document.getElementById('signup-form');
+      if (login.style.display === 'none') {
+        login.style.display = 'flex';
+        signup.style.display = 'none';
+      } else {
+        login.style.display = 'none';
+        signup.style.display = 'flex';
+      }
+    }
+
+    function handleAuth() {
+      document.getElementById('auth-content').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+      document.getElementById('app-content').style.flexDirection = 'column';
+      document.getElementById('app-content').style.height = '100%';
+    }
+
+    function handleLogout() {
+      document.getElementById('app-content').style.display = 'none';
+      document.getElementById('auth-content').style.display = 'flex';
+      if (document.getElementById('auth-email')) document.getElementById('auth-email').value = '';
+      if (document.getElementById('auth-pass')) document.getElementById('auth-pass').value = '';
+      if (document.getElementById('auth-name')) document.getElementById('auth-name').value = '';
+      if (document.getElementById('auth-signup-email')) document.getElementById('auth-signup-email').value = '';
+      if (document.getElementById('auth-signup-pass')) document.getElementById('auth-signup-pass').value = '';
+    }
+
+    // ==========================================
+    // 🚀 AI API CONFIGURATION
+    // You can switch to OpenAI, OpenRouter, or other compatible APIs
+    // by changing the URL, Key, and Model below.
+    // ==========================================
+    let API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    let API_KEY = '';
+    let API_MODEL = 'llama-3.3-70b-versatile';
+
+    // Fetch api.env configuration dynamically
+    async function loadEnvConfig() {
+      try {
+        const res = await fetch('api.env');
+        if (res.ok) {
+          const text = await res.text();
+          text.split('\n').forEach(line => {
+            const [key, ...val] = line.split('=');
+            if (key && val.length) {
+              const v = val.join('=').trim().replace(/^["'](.*)["']$/, '$1');
+              if (key.trim() === 'API_URL') API_URL = v;
+              if (key.trim() === 'API_KEY') API_KEY = v;
+              if (key.trim() === 'API_MODEL') API_MODEL = v;
+            }
+          });
+        } else {
+          console.warn("api.env returned status: ", res.status);
+        }
+      } catch (e) {
+        console.warn("Could not load api.env file. Please ensure you are running this on a local server.");
+      }
+    }
+    // ==========================================
+    const CAT_COLORS = { venue: '#7ab8ff', catering: '#c9a84c', decoration: '#ff7eb3', entertainment: '#fb923c', photography: '#a78bfa', invitations: '#4db8a8', logistics: '#e8c97a', contingency: '#6b7280', misc: '#888' };
+
+    let S = null;
+    let chatHistory = [];
+    try {
+      const saved = localStorage.getItem('eventiq_state');
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p && typeof p === 'object' && p.S && p.S.event) {
+          S = p.S;
+          chatHistory = p.chatHistory || [];
+        } else if (p && p.event) {
+          S = p; // fallback for older saves
+        } else {
+          S = null;
+        }
+      }
+    } catch (e) { }
+    if (!S) S = freshState();
+
+    function saveState() {
+      try { localStorage.setItem('eventiq_state', JSON.stringify({ S, chatHistory })); } catch (e) { }
+    }
+
+    function freshState() { return { event: { type: '', name: '', date: '', location: '', guests: 0, days: 1 }, budget: { total: 0, allocated: {}, spent: {}, remaining: 0, overspent_categories: [] }, expenses: [], vendors: [], tips: [], alerts: [] } }
+
+    function fmt(n) { n = Math.round(n || 0); return 'Rs ' + n.toLocaleString('en-IN') }
+
+    function updateNav() {
+      document.getElementById('s-event').textContent = S.event.type || '—';
+      document.getElementById('s-budget').textContent = S.budget.total ? fmt(S.budget.total) : 'Rs 0';
+      const spent = S.budget.total - (S.budget.remaining || 0);
+      document.getElementById('s-spent').textContent = fmt(spent);
+      const left = S.budget.remaining || 0;
+      const el = document.getElementById('s-left');
+      el.textContent = fmt(left);
+      el.className = 'stat-val ' + (left < 0 ? 'r' : left < S.budget.total * .15 ? 'a' : 'g');
+      document.getElementById('s-guests').textContent = S.event.guests || '—';
+    }
+
+    function updateBudgetMeter() {
+      const al = S.budget.allocated || {}, sp = S.budget.spent || {};
+      if (typeof al !== 'object') return;
+      const keys = Object.keys(al).filter(k => al[k] > 0);
+      const el = document.getElementById('brc');
+      if (!keys.length) { el.style.display = 'none'; return }
+      el.style.display = 'block';
+      document.getElementById('brc-rows').innerHTML = keys.map(k => {
+        const pct = al[k] ? Math.min(Math.round(((sp[k] || 0) / al[k]) * 100), 100) : 0;
+        const c = pct > 90 ? '#e05c5c' : pct > 70 ? '#e8a23a' : CAT_COLORS[k] || '#c9a84c';
+        return `<div class="brc-row"><div class="brc-dot" style="background:${c}"></div><span class="brc-label">${k.charAt(0).toUpperCase() + k.slice(1)}</span><div class="brc-track"><div class="brc-fill" style="width:${pct}%;background:${c}"></div></div><span class="brc-pct">${pct}%</span></div>`;
+      }).join('');
+    }
+
+    function updateExpList() {
+      const el = document.getElementById('exp-list');
+      if (!S.expenses.length) { el.innerHTML = '<div class="empty-state">No expenses logged yet</div>'; return }
+      el.innerHTML = S.expenses.slice(-7).reverse().map(e => {
+        const c = CAT_COLORS[e.category?.toLowerCase()] || '#888';
+        return `<div class="exp-row"><div class="exp-bullet" style="background:${c}"></div><div class="exp-info"><div class="exp-cat">${e.category || 'Misc'}</div><div class="exp-desc">${e.description || ''}</div></div><div class="exp-cost">${fmt(e.amount)}</div></div>`;
+      }).join('');
+    }
+
+    function updateTips(tips) {
+      if (!tips?.length) return;
+      S.tips = tips.slice(0, 5);
+      document.getElementById('tips-list').innerHTML = S.tips.map(t => `<div class="tip-row"><span class="tip-gem">◆</span><span>${t}</span></div>`).join('');
+    }
+
+    function updateTimeline(tl) {
+      if (!tl?.length) return;
+      document.getElementById('tl-list').innerHTML = tl.slice(0, 7).map((item, i) => `<div class="tl-row"><div style="position:relative"><div class="tl-pip ${i === 0 ? 'now' : i < 2 ? 'done' : ''}"></div><div class="tl-connector"></div></div><div><div class="tl-when">${item.when || ''}</div><div class="tl-task">${item.task || item}</div></div></div>`).join('');
+    }
+
+    function buildSystem() {
+      return `You are EventIQ — an AI Event Planning, Budget Tracking, and Conversational Assistant.
+
+CURRENT STATE:
+${JSON.stringify(S)}
+
+You help users plan events, track expenses, manage budgets, and give smart money-saving advice.
+CRITICAL: You MUST understand English, Hindi, and Hinglish inputs, BUT ALWAYS reply mostly in English. If the user speaks Hinglish (e.g. "Bhai mera birthday hai"), you should acknowledge it warmly, but respond in clear, professional English. If the user gets frustrated (e.g. "pagal hai kya"), apologize gently, understand their needs from the conversation, and correct yourself in English.
+
+---
+
+## 🎭 PERSONALITY
+* Friendly and helpful.
+* Short, clear, natural conversation.
+* MUST strictly focus on the current event. DO NOT mention or provide templates for Wedding if the user asks for Birthday, and vice versa. NEVER mix them.
+
+---
+
+## 🧠 INTENT TYPES
+Classify user input into: GREETING, CASUAL_CHAT, EVENT_CREATION, EXPENSE_ENTRY, QUERY, OPTIMIZATION, SCENARIO, REPORT, UNKNOWN
+
+---
+
+## 👋 CHAT RULE
+If GREETING, CASUAL_CHAT, or any random comment:
+Return ONLY:
+{
+  "reply": "Friendly natural response in English.",
+  "type": "chat",
+  "suggested_prompts": ["Plan a Wedding", "Track a Birthday Budget"]
+}
+
+---
+
+## 📊 EVENT CREATION & BUDGET ALLOCATION
+Extract: event_type, guests, budget (INR).
+
+Generate budget allocation (must total 100%):
+* Wedding: venue 25, catering 35, decoration 15, entertainment 5, photography 8, logistics 5, misc 7
+* Birthday: venue 30, catering 40, decoration 20, entertainment 5, misc 5
+* Corporate: venue 35, catering 30, entertainment 15, decoration 10, logistics 5, misc 5
+
+CRITICAL: When discussing the budget breakdown in your 'reply', YOU MUST ONLY DISCUSS THE SPECIFIC EVENT TYPE THE USER WANTS (e.g., if Birthday, do NOT mention wedding templates). Output the specific breakdown in the reply.
+
+---
+
+## 💰 EXPENSE ENTRY
+Extract: amount (number only), category, description.
+Allowed categories ONLY: venue, catering, decoration, entertainment, photography, logistics, misc.
+Normalize: food → catering, dj/music → entertainment, flowers → decoration.
+
+---
+
+## 📈 BUDGET LOGIC & SAVING TIPS
+Always calculate: total_spent, remaining_budget.
+Alert if remaining < 0 or spent > 70%.
+Always give at least 2 tips with ₹ calculations.
+
+---
+
+## 📦 OUTPUT FORMAT
+IF CHAT:
+{ "reply": "...", "type": "chat", "state_update": { "event": { "guests": 5 } }, "suggested_prompts": ["...", "..."] }
+
+ELSE ALWAYS RETURN:
+{
+  "reply": "Your detailed helpful response here, correctly formatted in English.",
+  "type": "event|expense|query|optimization|scenario|report",
+  "event": { "event_type": "", "guests": 0, "budget": 0 },
+  "budget": {
+    "total": 0,
+    "allocated": { "venue": 0, "catering": 0, "decoration": 0, "entertainment": 0, "photography": 0, "logistics": 0, "misc": 0 },
+    "spent": { "venue": 0, "catering": 0, "decoration": 0, "entertainment": 0, "photography": 0, "logistics": 0, "misc": 0 },
+    "remaining": 0
+  },
+  "expense_added": { "amount": 0, "category": "", "description": "" },
+  "alerts": [],
+  "insights": [],
+  "saving_tips": [],
+  "timeline": [],
+  "suggested_prompts": ["...", "..."]
+}
+
+---
+
+## ⚠️ STRICT RULES
+* ALWAYS return valid JSON
+* NEVER return text outside JSON
+* Keep a longer conversation context in mind.
+* ALL numbers must be numbers (not strings)`;
+    }
+
+    async function callAI() {
+      if (!API_KEY) {
+        await loadEnvConfig();
+        if (!API_KEY) throw new Error("API Key is missing. Please add it to your api.env file.");
+      }
+
+      const isGemini = API_URL.includes('generativelanguage');
+      const sysContent = buildSystem();
+
+      if (isGemini) {
+        const cleanModel = API_MODEL.trim();
+        // Use native Gemini API format
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModel}:generateContent?key=${API_KEY.trim()}`;
+
+        // Map history to Gemini format, send last 8 messages for better context memory
+        const contents = chatHistory.slice(-8).map(m => ({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }]
+        }));
+
+        const res = await fetch(geminiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: sysContent }] },
+            contents: contents,
+            generationConfig: { responseMimeType: "application/json" }
+          })
+        });
+
+        if (!res.ok) {
+          const e = await res.json();
+          throw new Error(e.error?.message || `HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      } else {
+        // OpenAI Format (Groq, OpenRouter, etc)
+        const messages = [
+          { role: 'system', content: sysContent },
+          ...chatHistory.slice(-8)
+        ];
+
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY.trim()}` },
+          body: JSON.stringify({ model: API_MODEL.trim(), temperature: 0.85, response_format: { type: "json_object" }, messages })
+        });
+
+        if (!res.ok) {
+          const e = await res.json();
+          throw new Error(e.error?.message || `HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        return data.choices?.[0]?.message?.content || '';
+      }
+    }
+
+    const msgsEl = document.getElementById('messages');
+    function addMsg(role, html) {
+      const wrap = document.createElement('div'); wrap.className = 'msg ' + role;
+      const av = document.createElement('div'); av.className = 'avatar'; av.innerHTML = role === 'bot' ? '♚' : 'You';
+      const bbl = document.createElement('div'); bbl.className = 'bubble'; bbl.innerHTML = html;
+      if (role === 'bot') { wrap.appendChild(av); wrap.appendChild(bbl) } else { wrap.appendChild(bbl); wrap.appendChild(av) }
+      msgsEl.appendChild(wrap); msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+    function showTyping() { const d = document.createElement('div'); d.className = 'msg bot'; d.id = 'typing'; d.innerHTML = '<div class="avatar">♚</div><div class="bubble typing-bbl"><div class="dots"><span></span><span></span><span></span></div></div>'; msgsEl.appendChild(d); msgsEl.scrollTop = msgsEl.scrollHeight }
+    function hideTyping() { document.getElementById('typing')?.remove() }
+
+    function buildDonut(al, sp) {
+      const cats = Object.keys(al).filter(k => al[k] > 0);
+      if (!cats.length) return '';
+      const total = Object.values(al).reduce((a, b) => a + b, 0);
+      let svg = `<svg viewBox="0 0 36 36" style="width:140px;height:140px;transform:rotate(-90deg);overflow:visible;margin:0 auto 16px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5))">`;
+      let cum = 0;
+      cats.forEach(k => {
+        const val = al[k];
+        const pct = val / total;
+        const dash = pct * 100;
+        const offset = -(cum / total) * 100;
+        const col = CAT_COLORS[k] || '#888';
+        svg += `<circle r="15.9" cx="18" cy="18" fill="transparent" stroke="${col}" stroke-width="3.5" stroke-dasharray="${dash} ${100 - dash}" stroke-dashoffset="${offset}" style="transition:all 1s ease"></circle>`;
+        cum += val;
+      });
+      // Add inner spent circle
+      if (sp) {
+        let sCum = 0;
+        const sTotal = Object.values(sp).reduce((a, b) => a + b, 0);
+        const validSpCats = Object.keys(sp).filter(k => al[k] > 0);
+        validSpCats.forEach(k => {
+          const val = sp[k];
+          const dash = (val / total) * 100;
+          const offset = -(sCum / total) * 100;
+          const col = CAT_COLORS[k] || '#888';
+          svg += `<circle r="12" cx="18" cy="18" fill="transparent" stroke="${col}" stroke-width="2" stroke-dasharray="${dash} ${100 - dash}" stroke-dashoffset="${offset}" opacity="0.6" style="transition:all 1s ease"></circle>`;
+          sCum += val;
+        });
+      }
+      svg += `<circle r="9" cx="18" cy="18" fill="var(--ink4)"></circle>`;
+      svg += `</svg>`;
+      return svg;
+    }
+
+    function buildBreakdownHTML(al, sp) {
+      if (!al || typeof al !== 'object') return '';
+      const cats = Object.keys(al).filter(k => al[k] > 0);
+      if (!cats.length) return '';
+      const total = Object.values(al).reduce((a, b) => a + b, 0);
+      return `<div class="i-card"><div class="i-card-head">Budget Breakdown</div>${buildDonut(al, sp)}${cats.map(k => { const pct = total ? Math.round((al[k] / total) * 100) : 0; const sP = al[k] ? Math.min(Math.round(((sp?.[k] || 0) / al[k]) * 100), 100) : 0; const cls = sP > 90 ? 'r' : sP > 70 ? 'a' : ''; return `<div class="bd-row"><span class="bd-lbl">${k.charAt(0).toUpperCase() + k.slice(1)}</span><div class="bd-track"><div class="bd-fill ${cls}" style="width:${pct}%"></div></div><span class="bd-amt">${fmt(al[k])}</span></div>` }).join('')}</div>`;
+    }
+
+    function printReport() {
+      const win = window.open('', '_blank');
+      if (!win) {
+        addMsg('bot', '<span style="color:var(--amber)">⚠ Popup blocked! Please allow popups to view the print report.</span>');
+        return;
+      }
+      win.document.body.innerHTML = '<h1>EventIQ Planning Report</h1>' + buildReportHTML(S);
+      const style = win.document.createElement('style');
+      style.textContent = 'body{font-family:sans-serif;padding:40px;color:#000;background:#fff;max-width:800px;margin:0 auto} .i-card, .report-card{border:1px solid #ddd;padding:20px;border-radius:8px;margin-bottom:20px} .bd-row{display:flex;margin-bottom:8px;align-items:center} .bd-lbl{width:120px;font-weight:bold} .bd-track{flex:1;height:12px;background:#eee;border-radius:6px;margin:0 15px;overflow:hidden} .bd-fill{height:100%;background:#4db8a8} .bd-amt{width:100px;text-align:right} .rg-label{font-size:11px;color:#666;text-transform:uppercase} .rg-val{font-size:16px;font-weight:bold;margin-bottom:10px} .ins-row{margin:6px 0} h1,h2{color:#333}';
+      win.document.head.appendChild(style);
+      win.document.title = 'EventIQ Plan';
+      setTimeout(() => win.print(), 500);
+    }
+
+    function buildAlertsHTML(alerts) {
+      if (!alerts?.length) return '';
+      return '<div style="margin-top:8px">' + alerts.map(a => { const c = a.includes('warning') || a.includes('Warning') || a.includes('caution') ? 'w' : a.includes('critical') || a.includes('Critical') ? 'd' : 'i'; return `<span class="badge ${c}">${a}</span>` }).join('') + '</div>';
+    }
+
+    function buildInsightsHTML(ins, tips) {
+      let h = '';
+      if (ins?.length || tips?.length) {
+        h += '<div class="i-card" style="margin-top:10px"><div class="i-card-head">Insights & Recommendations</div>';
+        (ins || []).forEach(i => {
+          const text = typeof i === 'string' ? i : (i.text || i.description || i.message || i.insight || JSON.stringify(i));
+          const c = String(text).toLowerCase().includes('over') ? 'dr' : String(text).toLowerCase().includes('warn') ? 'da' : 'dg';
+          h += `<div class="ins-row"><div class="ins-dot ${c}"></div><span>${text}</span></div>`;
+        });
+        (tips || []).slice(0, 3).forEach(t => {
+          const text = typeof t === 'string' ? t : (t.text || t.description || t.message || t.tip || JSON.stringify(t));
+          h += `<div class="ins-row"><div class="ins-dot db"></div><span>◆ ${text}</span></div>`;
+        });
+        h += '</div>';
+      }
+      return h;
+    }
+
+    function buildReportHTML(snap) {
+      if (!snap.budget.total) return '';
+      const spent = snap.budget.total - snap.budget.remaining;
+      const pg = snap.event.guests ? Math.round(spent / snap.event.guests) : 0;
+      return `<div class="report-card"><div class="report-title">Event Report — ${snap.event.type || 'Your Event'}</div><div class="report-grid"><div class="rg-cell"><div class="rg-label">Event Type</div><div class="rg-val">${snap.event.type || '—'}</div></div><div class="rg-cell"><div class="rg-label">Guests</div><div class="rg-val">${snap.event.guests || '—'}</div></div><div class="rg-cell"><div class="rg-label">Total Budget</div><div class="rg-val">${fmt(snap.budget.total)}</div></div><div class="rg-cell"><div class="rg-label">Total Spent</div><div class="rg-val">${fmt(spent)}</div></div><div class="rg-cell"><div class="rg-label">Remaining</div><div class="rg-val" style="color:${snap.budget.remaining < 0 ? 'var(--red)' : 'var(--teal)'}">${fmt(snap.budget.remaining)}</div></div><div class="rg-cell"><div class="rg-label">Cost / Guest</div><div class="rg-val">${fmt(pg)}</div></div></div>${buildBreakdownHTML(snap.budget.allocated, snap.budget.spent)}</div>`;
+    }
+
+    function buildChipsHTML(type, dynamicChips) {
+      if (dynamicChips && dynamicChips.length > 0) {
+        return '<div class="chips-row">' + dynamicChips.map(c => `<span class="chip" onclick="qSend('${c.replace(/'/g, "\\'").replace(/"/g, "&quot;")}')">${c}</span>`).join('') + '</div>';
+      }
+      const sets = { event: ['Add Expense', 'Save Money Tips', 'Fewer Guests?', 'Timeline', 'Full Report'], expense: ['Check Balance', 'Add Another Expense', 'Saving Tips'], query: ['Add Expense', 'Saving Tips', 'Full Report'], optimization: ['Apply Savings', 'New Breakdown'], scenario: ['Apply Change', 'Compare Options'], report: ['Save Money Tips', 'Add Expense', 'Timeline'] };
+      const chips = sets[type] || [];
+      if (!chips.length) return '';
+      return '<div class="chips-row">' + chips.map(c => `<span class="chip" onclick="qSend('${c}')">${c}</span>`).join('') + '</div>';
+    }
+
+    function parseMD(str) {
+      if (!str) return '';
+      return String(str).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n- /g, '<br>• ');
+    }
+
+    async function sendMessage() {
+      const el = document.getElementById('userinput');
+      const text = el.value.trim();
+      if (!text) return;
+      el.value = ''; el.style.height = '';
+      addMsg('user', text);
+      chatHistory.push({ role: 'user', content: text });
+      showTyping();
+      try {
+        const raw = await callAI();
+        hideTyping();
+        let parsed;
+        try {
+          const clean = raw.replace(/```json|```/g, '').trim();
+          const match = clean.match(/\{[\s\S]*\}/);
+          parsed = JSON.parse(match ? match[0] : clean);
+        } catch (e) { addMsg('bot', raw || "I wasn't able to process that — please try rephrasing."); return }
+
+        let botReplyText = parsed.reply || '';
+        if (botReplyText) chatHistory.push({ role: 'assistant', content: botReplyText });
+
+        if (parsed.type === 'chat') {
+          let html = `<div>${parseMD(botReplyText)}</div>`;
+          if (Array.isArray(parsed.suggested_prompts)) html += buildChipsHTML('chat', parsed.suggested_prompts);
+          addMsg('bot', html);
+          return;
+        }
+
+        const ev = parsed.event || (parsed.state_update && parsed.state_update.event) || {};
+        if (ev.type || ev.event_type) S.event.type = ev.type || ev.event_type;
+        if (ev.guests) S.event.guests = Number(ev.guests) || S.event.guests;
+        if (ev.date) S.event.date = ev.date;
+
+        const bg = parsed.budget || (parsed.state_update && parsed.state_update.budget) || {};
+        if (bg.total) S.budget.total = Number(bg.total) || S.budget.total;
+        if (bg.allocated && typeof bg.allocated === 'object') S.budget.allocated = bg.allocated;
+        if (bg.spent && typeof bg.spent === 'object') S.budget.spent = bg.spent;
+        if (bg.remaining !== undefined && bg.remaining !== null) S.budget.remaining = Number(bg.remaining);
+
+        if (parsed.expense_added && Number(parsed.expense_added.amount) > 0) {
+          const ex = parsed.expense_added;
+          const amt = Number(ex.amount);
+          const cat = (ex.category || 'misc').toLowerCase();
+          S.expenses.push({ amount: amt, category: cat, description: ex.description || '', vendor: ex.vendor || '' });
+          if (!S.budget.spent) S.budget.spent = {};
+          S.budget.spent[cat] = (Number(S.budget.spent[cat]) || 0) + amt;
+          if (S.budget.remaining !== undefined) S.budget.remaining = (Number(S.budget.remaining) || 0) - amt;
+          updateExpList();
+        }
+
+        if (Array.isArray(parsed.saving_tips) && parsed.saving_tips.length) updateTips(parsed.saving_tips);
+        if (Array.isArray(parsed.timeline) && parsed.timeline.length) updateTimeline(parsed.timeline);
+
+        updateNav();
+        updateBudgetMeter();
+        saveState();
+
+        let html = `<div>${parseMD(botReplyText)}</div>`;
+        if (['event', 'scenario'].includes(parsed.type) && S.budget.total) html += buildBreakdownHTML(S.budget.allocated, S.budget.spent);
+        if (parsed.type === 'report') html += buildReportHTML(S);
+        if (Array.isArray(parsed.alerts) && parsed.alerts.length) html += buildAlertsHTML(parsed.alerts);
+
+        const insArr = Array.isArray(parsed.insights) ? parsed.insights : [];
+        const tipsArr = Array.isArray(parsed.saving_tips) ? parsed.saving_tips : [];
+        html += buildInsightsHTML(insArr, tipsArr);
+
+        const promptsArr = Array.isArray(parsed.suggested_prompts) ? parsed.suggested_prompts : [];
+        html += buildChipsHTML(parsed.type, promptsArr);
+
+        addMsg('bot', html);
+      } catch (err) {
+        hideTyping();
+        addMsg('bot', `<span style="color:var(--red)">⚠ ${err.message}</span><br><span style="color:var(--mist2);font-size:12px">Please check your connection and try again.</span>`);
+        console.error(err);
+      }
+    }
+
+    function qSend(text) { document.getElementById('userinput').value = text; sendMessage() }
+
+    let recognition = null, listening = false;
+    function toggleVoice() {
+      const btn = document.getElementById('voiceBtn'), label = document.getElementById('voice-label');
+      if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) { addMsg('bot', '<span style="color:var(--amber)">Voice input requires Chrome or Edge browser.</span>'); return }
+      if (listening) { recognition?.stop(); return }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SR(); recognition.lang = 'en-IN'; recognition.interimResults = true; recognition.continuous = true;
+      recognition.onstart = () => {
+        listening = true;
+        btn.classList.add('on');
+        label.classList.add('show');
+        const wrap = document.createElement('div');
+        wrap.className = 'msg user';
+        wrap.id = 'live-voice';
+        wrap.style.opacity = '0.6';
+        wrap.innerHTML = '<div class="bubble">Listening... (click mic to send)</div><div class="avatar">You</div>';
+        msgsEl.appendChild(wrap);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+      };
+      recognition.onresult = (e) => {
+        let t = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i] && e.results[i][0]) {
+            t += e.results[i][0].transcript;
+          }
+        }
+        document.getElementById('userinput').value = t;
+        const live = document.getElementById('live-voice');
+        if (live) {
+          live.querySelector('.bubble').textContent = t || '...';
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+        }
+      };
+      recognition.onend = () => {
+        listening = false;
+        btn.classList.remove('on');
+        label.classList.remove('show');
+        const live = document.getElementById('live-voice');
+        if (live) live.remove();
+        const el = document.getElementById('userinput');
+        if (el.value.trim()) {
+          sendMessage();
+        }
+      };
+      recognition.onerror = (e) => {
+        listening = false;
+        btn.classList.remove('on');
+        label.classList.remove('show');
+        const live = document.getElementById('live-voice');
+        if (live) live.remove();
+        if (e.error !== 'aborted' && e.error !== 'no-speech') {
+          addMsg('bot', `<span style="color:var(--amber)">Voice error: ${e.error}.</span>`);
+        }
+      };
+      recognition.start();
+    }
+
+    function resetState() {
+      S = freshState(); chatHistory = []; updateNav(); updateBudgetMeter(); updateExpList(); saveState();
+      document.getElementById('tips-list').innerHTML = '<div class="empty-state">Plan an event to unlock tips</div>';
+      document.getElementById('tl-list').innerHTML = '<div class="empty-state">Add your event date to see timeline</div>';
+      document.getElementById('messages').innerHTML = `<div class="welcome"><div class="w-crown">♚</div><div class="w-title">Your <em>Event Planning</em><br>Concierge</div><div class="w-divider"></div><div class="w-sub">Premium AI-powered planning for Indian weddings, celebrations and corporate events.</div><div class="w-chips"><div class="w-chip" onclick="qSend('Plan a grand wedding for 300 guests with a budget of Rs 8 lakh')">💍 Grand Wedding</div><div class="w-chip" onclick="qSend('Plan a birthday party for 60 guests, budget Rs 80,000')">🎂 Birthday Party</div><div class="w-chip" onclick="qSend('Plan a corporate gala for 150 people, budget Rs 3 lakh')">💼 Corporate Gala</div><div class="w-chip" onclick="qSend('Plan a sangeet night for 120 guests, budget Rs 1.5 lakh')">💃 Sangeet Night</div></div></div>`;
+    }
+
+    // Initial load sync
+    updateNav();
+    updateBudgetMeter();
+    updateExpList();
+
+    const uinp = document.getElementById('userinput');
+    uinp.addEventListener('input', () => { uinp.style.height = ''; uinp.style.height = Math.min(uinp.scrollHeight, 100) + 'px' });
+    uinp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div id="expenseModal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;">
+    <div style="background:#1c1c22; padding:20px; width:300px; margin:100px auto; border-radius:10px;">
+      <h3>Add Expense</h3>
+      <input id="expAmount" placeholder="Amount" style="width:100%; margin:5px 0;">
+      <input id="expCategory" placeholder="Category" style="width:100%; margin:5px 0;">
+      <input id="expDesc" placeholder="Description" style="width:100%; margin:5px 0;">
+      <button onclick="addManualExpense()">Add</button>
+      <button onclick="closeExpenseModal()">Cancel</button>
+    </div>
+  </div>
+</body>
+
+</html>
