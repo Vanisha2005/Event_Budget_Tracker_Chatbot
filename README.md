@@ -34,4 +34,5 @@ An AI-powered Event Planning & Budget Management Chatbot that helps users plan e
 ## 📌 Author
 
 ## Vanisha
-Project for academic & learning purposes 🎓
+Project for academic & learning purposes 🎓 
+Deployment URL / App Link: https://eventiqchatbot.netlify.app/
